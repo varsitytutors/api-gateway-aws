@@ -14,22 +14,22 @@ TEST_NGINX_AWS_SECURITY_TOKEN ?= ${AWS_SECURITY_TOKEN}
 all: ;
 
 install: all
-	$(INSTALL) -d $(DESTDIR)/$(LUA_LIB_DIR)/api-gateway/aws/
-	$(INSTALL) -d $(DESTDIR)/$(LUA_LIB_DIR)/api-gateway/aws/kms/
-	$(INSTALL) -d $(DESTDIR)/$(LUA_LIB_DIR)/api-gateway/aws/s3/
-	$(INSTALL) -d $(DESTDIR)/$(LUA_LIB_DIR)/api-gateway/aws/sns/
-	$(INSTALL) -d $(DESTDIR)/$(LUA_LIB_DIR)/api-gateway/aws/kinesis/
-	$(INSTALL) -d $(DESTDIR)/$(LUA_LIB_DIR)/api-gateway/aws/lambda/
-	$(INSTALL) -d $(DESTDIR)/$(LUA_LIB_DIR)/api-gateway/aws/httpclient/
-	$(INSTALL) -d $(DESTDIR)/$(LUA_LIB_DIR)/api-gateway/aws/sts/
-	$(INSTALL) src/lua/api-gateway/aws/*.lua $(DESTDIR)/$(LUA_LIB_DIR)/api-gateway/aws/
-	$(INSTALL) src/lua/api-gateway/aws/httpclient/*.lua $(DESTDIR)/$(LUA_LIB_DIR)/api-gateway/aws/httpclient/
-	$(INSTALL) src/lua/api-gateway/aws/kms/*.lua $(DESTDIR)/$(LUA_LIB_DIR)/api-gateway/aws/kms/
-	$(INSTALL) src/lua/api-gateway/aws/sns/*.lua $(DESTDIR)/$(LUA_LIB_DIR)/api-gateway/aws/sns/
-	$(INSTALL) src/lua/api-gateway/aws/kinesis/*.lua $(DESTDIR)/$(LUA_LIB_DIR)/api-gateway/aws/kinesis/
-	$(INSTALL) src/lua/api-gateway/aws/lambda/*.lua $(DESTDIR)/$(LUA_LIB_DIR)/api-gateway/aws/lambda/
-	$(INSTALL) src/lua/api-gateway/aws/sts/*.lua $(DESTDIR)/$(LUA_LIB_DIR)/api-gateway/aws/sts/
-#	$(INSTALL) src/lua/api-gateway/aws/s3/*.lua $(DESTDIR)/$(LUA_LIB_DIR)/api-gateway/aws/s3/
+	$(INSTALL) -d $(LUA_LIB_DIR)/api-gateway/aws/
+	$(INSTALL) -d $(LUA_LIB_DIR)/api-gateway/aws/kms/
+	$(INSTALL) -d $(LUA_LIB_DIR)/api-gateway/aws/s3/
+	$(INSTALL) -d $(LUA_LIB_DIR)/api-gateway/aws/sns/
+	$(INSTALL) -d $(LUA_LIB_DIR)/api-gateway/aws/kinesis/
+	$(INSTALL) -d $(LUA_LIB_DIR)/api-gateway/aws/lambda/
+	$(INSTALL) -d $(LUA_LIB_DIR)/api-gateway/aws/httpclient/
+	$(INSTALL) -d $(LUA_LIB_DIR)/api-gateway/aws/sts/
+	$(INSTALL) src/lua/api-gateway/aws/*.lua $(LUA_LIB_DIR)/api-gateway/aws/
+	$(INSTALL) src/lua/api-gateway/aws/httpclient/*.lua $(LUA_LIB_DIR)/api-gateway/aws/httpclient/
+	$(INSTALL) src/lua/api-gateway/aws/kms/*.lua $(LUA_LIB_DIR)/api-gateway/aws/kms/
+	$(INSTALL) src/lua/api-gateway/aws/sns/*.lua $(LUA_LIB_DIR)/api-gateway/aws/sns/
+	$(INSTALL) src/lua/api-gateway/aws/kinesis/*.lua $(LUA_LIB_DIR)/api-gateway/aws/kinesis/
+	$(INSTALL) src/lua/api-gateway/aws/lambda/*.lua $(LUA_LIB_DIR)/api-gateway/aws/lambda/
+	$(INSTALL) src/lua/api-gateway/aws/sts/*.lua $(LUA_LIB_DIR)/api-gateway/aws/sts/
+#	$(INSTALL) src/lua/api-gateway/aws/s3/*.lua $(LUA_LIB_DIR)/api-gateway/aws/s3/
 
 test-docker:
 	echo "running tests with docker ..."
