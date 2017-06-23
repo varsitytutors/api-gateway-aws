@@ -7,10 +7,10 @@
 --
 
 local cjson = require "cjson"
-local http = require "api-gateway.aws.httpclient.http"
-local url = require "api-gateway.aws.httpclient.url"
+local http = require "resty.http"
+local url = require "resty.url"
 local awsDate = require "api-gateway.aws.AwsDateConverter"
-local cacheCls = require "api-gateway.cache.cache"
+local cacheCls = require "resty.cache"
 
 local DEFAULT_SECURITY_CREDENTIALS_HOST = "169.254.169.254"
 local DEFAULT_SECURITY_CREDENTIALS_PORT = "80"
