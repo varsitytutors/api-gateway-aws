@@ -28,8 +28,8 @@ local _M = { _VERSION = '0.01' }
 local setmetatable = setmetatable
 local error = error
 local debug_mode = ngx.config.debug
-local http = require"api-gateway.aws.httpclient.http"
-local http_resty = require"api-gateway.aws.httpclient.restyhttp"
+local http = require"resty.httpclient.http"
+local http_resty = require"resty.httpclient.restyhttp"
 local AWSV4S = require"api-gateway.aws.AwsV4Signature"
 local IamCredentials = require"api-gateway.aws.AWSIAMCredentials"
 local cjson = require"cjson"
