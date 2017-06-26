@@ -41,7 +41,7 @@ local function tableToString(table_ref)
 end
 
 local function initIamCache(shared_cache_dict)
-    local localCache = require "api-gateway.cache.store.localCache":new({
+    local localCache = require "resty.cache.store.localCache":new({
         dict = shared_cache_dict,
         ttl = function (value)
             local value_o = cjson.decode(value)
