@@ -1,8 +1,8 @@
 package = "lua-api-gateway-aws"
-version = "1.7.1-0"
+version = "1.7.2-0"
 source = {
    url = "git://github.com/adobe-apiplatform/api-gateway-aws",
-   tag = "1.7.1"
+   tag = "1.7.2"
 }
 description = {
    summary = "AWS SDK for NGINX with Lua",

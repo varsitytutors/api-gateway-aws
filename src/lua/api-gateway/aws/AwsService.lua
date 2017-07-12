@@ -208,8 +208,9 @@ function _M:getAuthorizationHeader(http_method, path, uri_args, body)
     local credentials = self:getCredentials()
     credentials.aws_region = self.aws_region
     credentials.aws_service = self.aws_service
+    credentials.aws_api_gateway_host = self.aws_api_gateway_host
 
-    local awsAuth = AWSV4S:new(credentials, self.doubleUrlEncode, self.aws_api_gateway_host)
+    local awsAuth = AWSV4S:new(credentials, self.doubleUrlEncode)
     local authorization = awsAuth:getAuthorizationHeader(http_method,
         path, -- "/"
         uri_args, -- ngx.req.get_uri_args()
