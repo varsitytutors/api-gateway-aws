@@ -21,6 +21,7 @@ function HmacAuthV4Handler:new(o)
         self.aws_region = o.aws_region
         self.aws_secret_key = o.aws_secret_key
         self.aws_access_key = o.aws_access_key
+	self.aws_api_gateway_host = o.aws_api_gateway_host
         ---
         -- Whether to double url-encode the resource path when constructing the
         -- canonical request. By default, double url-encoding is true.
@@ -159,6 +160,10 @@ function HmacAuthV4Handler:getSignature(http_method, request_uri, uri_arg_table,
 
     local headers = {}
     headers.host = self.aws_service .. "." .. self.aws_region .. ".amazonaws.com"
+    if self.aws_api_gateway_host then
+       headers.host = self.aws_api_gateway_host .. "." .. headers.host
+    end
+
     headers["x-amz-date"] = date2
 
     local encoded_request_uri = request_uri

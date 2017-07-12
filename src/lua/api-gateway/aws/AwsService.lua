@@ -67,6 +67,7 @@ end
 -- @param o object containing info about the AWS Service and Credentials or IAM User to use
 -- o.aws_region                     - required. AWS Region
 -- o.aws_service                    - required. the AWS Service to call
+-- o.aws_api_gateway_host                - optional. the AWS-API-Gateway host
 -- o.aws_credentials                -  An object defining the credentials provider.
 --          i.e. for IAM Credentials
 --            aws_credentials = {
@@ -207,7 +208,8 @@ function _M:getAuthorizationHeader(http_method, path, uri_args, body)
     local credentials = self:getCredentials()
     credentials.aws_region = self.aws_region
     credentials.aws_service = self.aws_service
-    local awsAuth = AWSV4S:new(credentials, self.doubleUrlEncode)
+
+    local awsAuth = AWSV4S:new(credentials, self.doubleUrlEncode, self.aws_api_gateway_host)
     local authorization = awsAuth:getAuthorizationHeader(http_method,
         path, -- "/"
         uri_args, -- ngx.req.get_uri_args()
