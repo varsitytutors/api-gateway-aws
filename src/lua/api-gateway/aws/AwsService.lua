@@ -306,6 +306,10 @@ function _M:performAction(actionName, arguments, path, http_method, useSSL, time
         request_path = request_path .. "?" .. query_string
     end
 
+    if self.aws_api_gateway_host then
+       host = self.aws_api_gateway_host .. "." .. host
+    end
+
     if (self.aws_debug == true) then
         ngx.log(ngx.DEBUG, "Calling AWS:", request_method, " ", scheme, "://", host, ":", port, request_path, ". Body=", request_body)
         local s = tableToString(request_headers)
