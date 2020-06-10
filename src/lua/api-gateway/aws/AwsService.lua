@@ -296,9 +296,11 @@ function _M:performAction(actionName, arguments, path, http_method, useSSL, time
         ["X-Amz-Date"] = awsAuth.aws_date,
         ["Accept"] = "application/json",
         ["Content-Type"] = content_type,
-        ["X-Amz-Target"] = t,
         ["x-amz-security-token"] = authToken
     }
+    if (actionName ~= nil) then
+      request_headers["X-Amz-Target"] = t
+    end
     if ( extra_headers ~= nil ) then
         for headerName, headerValue in pairs(extra_headers) do
             request_headers[headerName] = headerValue
