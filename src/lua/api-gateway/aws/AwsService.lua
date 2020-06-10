@@ -211,11 +211,11 @@ function _M:getAuthorizationHeader(http_method, path, uri_args, body)
     credentials.aws_api_gateway_host = self.aws_api_gateway_host
 
     local awsAuth = AWSV4S:new(credentials, self.doubleUrlEncode)
-    local authorization = awsAuth:getAuthorizationHeader(http_method,
+    local authorization, uri_args_new = awsAuth:getAuthorizationHeader(http_method,
         path, -- "/"
         uri_args, -- ngx.req.get_uri_args()
         body)
-    return authorization, awsAuth, credentials.token
+    return authorization, awsAuth, credentials.token, uri_args_new
 end
 
 ---
@@ -230,16 +230,21 @@ end
 function _M:getRequestArguments(actionName, parameters)
 
     local urlencoded_args = ""
-    if actionName ~= nil then
-      urlencoded_args = "Action=" .. actionName
-    end
 
     if parameters ~= nil then
         for key, value in pairs(parameters) do
             local proper_val = ngx.re.gsub(tostring(value), "&", "%26", "ijo")
-            urlencoded_args = urlencoded_args .. "&" .. key .. "=" .. (proper_val or "")
+            if string.len(urlencoded_args) ~= 0 then
+              urlencoded_args = urlencoded_args .. "&"
+            end
+            urlencoded_args = urlencoded_args .. key .. "=" .. (proper_val or "")
         end
     end
+
+    if actionName ~= nil then
+      urlencoded_args = "Action=" .. actionName .. urlencoded_args
+    end
+
     return urlencoded_args
 end
 
@@ -290,7 +295,7 @@ function _M:performAction(actionName, arguments, path, http_method, useSSL, time
     end
 
 
-    local authorization, awsAuth, authToken = self:getAuthorizationHeader(request_method, request_path, uri_args, request_body)
+    local authorization, awsAuth, authToken, uri_args_new = self:getAuthorizationHeader(request_method, request_path, uri_args, request_body)
 
     local request_headers = {
         Authorization = authorization,
@@ -311,7 +316,7 @@ function _M:performAction(actionName, arguments, path, http_method, useSSL, time
 
     -- this race condition has to be AFTER the authorization header has been calculated
     if request_method == "GET" then
-        request_path = request_path .. "?" .. query_string
+        request_path = request_path .. "?" .. uri_args_new
     end
 
     if self.aws_api_gateway_host then
