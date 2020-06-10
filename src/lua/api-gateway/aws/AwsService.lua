@@ -266,7 +266,9 @@ function _M:performAction(actionName, arguments, path, http_method, useSSL, time
     local request_path = path or "/"
 
     local uri_args, request_body = arguments, ""
-    uri_args.Action = actionName
+    if actionName ~= nil then
+      uri_args.Action = actionName
+    end
 
     local content_type = contentType or "application/x-amz-json-1.1"
 
@@ -290,7 +292,6 @@ function _M:performAction(actionName, arguments, path, http_method, useSSL, time
 
     local authorization, awsAuth, authToken = self:getAuthorizationHeader(request_method, request_path, uri_args, request_body)
 
-    local t = self.aws_service_name .. "." .. actionName
     local request_headers = {
         Authorization = authorization,
         ["X-Amz-Date"] = awsAuth.aws_date,
@@ -299,7 +300,7 @@ function _M:performAction(actionName, arguments, path, http_method, useSSL, time
         ["x-amz-security-token"] = authToken
     }
     if (actionName ~= nil) then
-      request_headers["X-Amz-Target"] = t
+      request_headers["X-Amz-Target"] = self.aws_service_name .. "." .. actionName
     end
     if ( extra_headers ~= nil ) then
         for headerName, headerValue in pairs(extra_headers) do
