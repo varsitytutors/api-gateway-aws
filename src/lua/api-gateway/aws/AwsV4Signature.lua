@@ -182,23 +182,14 @@ function HmacAuthV4Handler:getSignature(http_method, request_uri, uri_arg_table,
                 http_method, encoded_request_uri,
                 uri_args,
                 headers, request_payload) ) )
-    return sign
+    return sign, uri_args
 end
 
 function HmacAuthV4Handler:getAuthorizationHeader(http_method, request_uri, uri_arg_table, request_payload )
-    local auth_signature = self:getSignature(http_method, request_uri, uri_arg_table, request_payload)
+    local auth_signature, uri_args = self:getSignature(http_method, request_uri, uri_arg_table, request_payload)
     local authHeader = "AWS4-HMAC-SHA256 Credential=" .. self.aws_access_key.."/" .. self.aws_date_short .. "/" .. self.aws_region
            .."/" .. self.aws_service.."/aws4_request,SignedHeaders=host;x-amz-date,Signature="..auth_signature
-    return authHeader
+    return authHeader, uri_args
 end
 
 return HmacAuthV4Handler
-
-
-
-
-
-
-
-
-
