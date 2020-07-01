@@ -210,11 +210,29 @@ function _M:getAuthorizationHeader(http_method, path, uri_args, body)
     credentials.aws_service = self.aws_service
     credentials.aws_api_gateway_host = self.aws_api_gateway_host
 
+    if (self.aws_debug == true) then
+        ngx.log(ngx.DEBUG, ngx.ctx.vt_debug_id, ", awsAuth:getAuthorizationHeader, path::", ngx.encode_base64(path))
+        ngx.log(ngx.DEBUG, ngx.ctx.vt_debug_id, ", awsAuth:getAuthorizationHeader, method::", http_method)
+        local s = tableToString(uri_args)
+        ngx.log(ngx.DEBUG, ngx.ctx.vt_debug_id, ", awsAuth:getAuthorizationHeader, args::", ngx.encode_base64(s))
+        ngx.log(ngx.DEBUG, ngx.ctx.vt_debug_id, ", awsAuth:getAuthorizationHeader, body::", ngx.encode_base64(body))
+    end
+
     local awsAuth = AWSV4S:new(credentials, self.doubleUrlEncode)
     local authorization, uri_args_new = awsAuth:getAuthorizationHeader(http_method,
         path, -- "/"
         uri_args, -- ngx.req.get_uri_args()
         body)
+
+      if (self.aws_debug == true) then
+          ngx.log(ngx.DEBUG, ngx.ctx.vt_debug_id, ", awsAuth:getAuthorizationHeader:response, authorization::", ngx.encode_base64(authorization))
+          ngx.log(ngx.DEBUG, ngx.ctx.vt_debug_id, ", awsAuth:getAuthorizationHeader:response, awsAuth::", ngx.encode_base64(awsAuth))
+          local s = tableToString(uri_args)
+          ngx.log(ngx.DEBUG, ngx.ctx.vt_debug_id, ", awsAuth:getAuthorizationHeader:response, token::", ngx.encode_base64(credentials.token))
+          local s = tableToString(uri_args_new)
+          ngx.log(ngx.DEBUG, ngx.ctx.vt_debug_id, ", awsAuth:getAuthorizationHeader:response, args::", ngx.encode_base64(s))
+      end
+
     return authorization, awsAuth, credentials.token, uri_args_new
 end
 
@@ -324,10 +342,14 @@ function _M:performAction(actionName, arguments, path, http_method, useSSL, time
     end
 
     if (self.aws_debug == true) then
-        ngx.log(ngx.DEBUG, "Request Path:>>", ngx.encode_base64(request_path), "<<")
-        ngx.log(ngx.DEBUG, "Calling AWS:", request_method, " ", scheme, "://", host, ":", port, request_path, ". Body=", request_body)
+        ngx.log(ngx.DEBUG, ngx.ctx.vt_debug_id, ", LUA -> AWS, path::", ngx.encode_base64(request_path))
+        ngx.log(ngx.DEBUG, ngx.ctx.vt_debug_id, ", LUA -> AWS, method::", request_method)
+        ngx.log(ngx.DEBUG, ngx.ctx.vt_debug_id, ", LUA -> AWS, scheme::", scheme)
+        ngx.log(ngx.DEBUG, ngx.ctx.vt_debug_id, ", LUA -> AWS, host::", host)
+        ngx.log(ngx.DEBUG, ngx.ctx.vt_debug_id, ", LUA -> AWS, host::", host)
+        ngx.log(ngx.DEBUG, ngx.ctx.vt_debug_id, ", LUA -> AWS, body::", ngx.encode_base64(request_body))
         local s = tableToString(request_headers)
-        ngx.log(ngx.DEBUG, "Calling AWS: Headers:", s)
+        ngx.log(ngx.DEBUG, ngx.ctx.vt_debug_id, ", LUA -> AWS, headers::", ngx.encode_base64(s))
     end
 
     local ok, code, headers, status, body = self:getHttpClient():request(self:getRequestObject({
