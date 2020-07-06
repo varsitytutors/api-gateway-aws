@@ -226,9 +226,10 @@ function _M:getAuthorizationHeader(http_method, path, uri_args, body)
 
       if (self.aws_debug == true) then
           ngx.log(ngx.DEBUG, ngx.ctx.vt_debug_id, ", awsAuth:getAuthorizationHeader:response, authorization::", ngx.encode_base64(authorization))
-          ngx.log(ngx.DEBUG, ngx.ctx.vt_debug_id, ", awsAuth:getAuthorizationHeader:response, awsAuth::", ngx.encode_base64(awsAuth))
-          local s = tableToString(uri_args)
-          ngx.log(ngx.DEBUG, ngx.ctx.vt_debug_id, ", awsAuth:getAuthorizationHeader:response, token::", ngx.encode_base64(credentials.token))
+          local s = tableToString(awsAuth)
+          ngx.log(ngx.DEBUG, ngx.ctx.vt_debug_id, ", awsAuth:getAuthorizationHeader:response, awsAuth::", ngx.encode_base64(s))
+          local s = tableToString(credentials)
+          ngx.log(ngx.DEBUG, ngx.ctx.vt_debug_id, ", awsAuth:getAuthorizationHeader:response, credentials::", ngx.encode_base64(s))
           local s = tableToString(uri_args_new)
           ngx.log(ngx.DEBUG, ngx.ctx.vt_debug_id, ", awsAuth:getAuthorizationHeader:response, args::", ngx.encode_base64(s))
       end
